@@ -39,7 +39,7 @@ const defaultOption: Partial<SpritePackerOption> = {
 
 const supportImages = /.+\.(jpeg|jpg|png|bmp|tiff|tif|gif)$/;
 
-export default async function spritePacker<T extends FormatType = FormatType>(
+export default async function spritePacker<T extends FormatType = 'JsonArray'>(
   option: SpritePackerOption<T>
 ): Promise<{ image: Buffer; data: ReturnType<typeof format[T]> }>;
 
