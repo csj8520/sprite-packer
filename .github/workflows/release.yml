@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: release
 on:
   push:
@@ -5,16 +6,14 @@ on:
       - master
 jobs:
   release:
+    if: contains(github.event.head_commit.message, 'release')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.1
 
-      - name: Install pnpm 🛠️
-        run: npm i -g pnpm
-
-      - name: Install Packages 🛠️
-        run: pnpm i
+      - name: Install Packages 🔧
+        run: npm i -g pnpm && pnpm i
 
       - name: Publish to NPM 🚀
         uses: JS-DevTools/npm-publish@v1
