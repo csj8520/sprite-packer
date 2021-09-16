@@ -1,6 +1,6 @@
 {
   "name": "@sjchang/sprite-packer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "sprite-packer",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
