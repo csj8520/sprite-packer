@@ -262,7 +262,7 @@ $ spritepacker -f "./test/image/**/*.png" -n icons -o ./test --format css --fram
 # Usage from node
 
 ```ts
-import spritePacker from '@csj/sprite-packer';
+import spritePacker from '@sjchang/sprite-packer';
 
 const result = await spritePacker({
   file: './*.png',
