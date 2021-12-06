@@ -5,10 +5,11 @@ import Jimp from 'jimp';
 import { promisify } from 'es6-promisify';
 import { MaxRectsPacker } from 'maxrects-packer';
 import globParent from 'glob-parent';
-import { format } from './utiles';
+import { format } from './format';
 const glob = promisify(_glob);
 
-type FormatType = keyof typeof format;
+export type FormatType = keyof typeof format;
+export { format };
 
 export interface SpritePackerOption<T extends FormatType = FormatType> {
   file: string;
@@ -41,7 +42,7 @@ const supportImages = /.+\.(jpeg|jpg|png|bmp|tiff|tif|gif)$/;
 
 export default async function spritePacker<T extends FormatType = 'JsonArray'>(
   option: SpritePackerOption<T>
-): Promise<{ image: Buffer; data: ReturnType<typeof format[T]> }>;
+): Promise<{ image: Buffer; data: ReturnType<typeof format[T]['format']> }>;
 
 export default async function spritePacker<T extends FormatType = FormatType>(option: SpritePackerOption<T>) {
   option = Object.assign({}, defaultOption, option);
@@ -82,19 +83,16 @@ export default async function spritePacker<T extends FormatType = FormatType>(op
     if (it.rot) it.data.jimp as Jimp;
     img.composite(it.data.jimp, it.x, it.y);
   });
-
-  if (!format[option.format!]) throw new Error(`format: ${option.format} is not support`);
+  const useFormat = format[option.format!];
+  if (!useFormat) throw new Error(`format: ${option.format} is not support`);
 
   const image = await img.getBufferAsync('image/png');
-  const data = format[option.format!](bin, option);
+  const data = useFormat.format(bin, option);
 
   if (option.saveFile) {
     await fs.writeFile(path.join(option.outDir!, `${option.name!}.png`), image);
-    if (option.format === 'css') {
-      await fs.writeFile(path.join(option.outDir!, `${option.name!}.css`), data as string);
-    } else {
-      await fs.writeFile(path.join(option.outDir!, `${option.name!}.json`), JSON.stringify(data));
-    }
+
+    await fs.writeFile(path.join(option.outDir!, `${option.name!}.${useFormat.extName}`), useFormat.toRaw(data as any));
   }
   return { image, data };
 }

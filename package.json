@@ -1,6 +1,6 @@
 {
   "name": "@sjchang/sprite-packer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "sprite-packer",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,7 +11,9 @@
     "url": "https://github.com/csj8520/sprite-packer"
   },
   "scripts": {
-    "dev": "ts-node-dev ./src/index.ts",
+    "dev": "esno ./src/index.ts",
+    "dev:cli": "esno ./src/cli.ts",
+    "dev:cli:plist": "esno ./src/cli.ts -f \"./.test/image/**/*.png\" -n icons -o ./.test --format plist",
     "debug": "ts-node-dev --inspect -- ./src/index.ts",
     "clean": "rimraf dist",
     "build": "pnpm run clean && tsc",
@@ -26,24 +28,27 @@
   "keywords": [
     "sprite-packer",
     "sprite",
-    "image"
+    "image",
+    "phaser",
+    "cocos"
   ],
   "license": "ISC",
   "dependencies": {
     "es6-promisify": "^7.0.0",
-    "glob": "^7.1.7",
-    "glob-parent": "^6.0.1",
+    "glob": "^7.2.0",
+    "glob-parent": "^6.0.2",
     "jimp": "^0.16.1",
     "maxrects-packer": "^2.7.2",
-    "yargs": "^17.1.1"
+    "yargs": "^17.3.0"
   },
   "devDependencies": {
     "@types/es6-promisify": "^6.0.0",
-    "@types/glob": "^7.1.4",
+    "@types/glob": "^7.2.0",
     "@types/glob-parent": "^5.1.1",
-    "@types/yargs": "^17.0.2",
+    "@types/yargs": "^17.0.7",
+    "esno": "^0.12.1",
     "rimraf": "^3.0.2",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.3.5"
+    "typescript": "^4.5.2"
   }
 }

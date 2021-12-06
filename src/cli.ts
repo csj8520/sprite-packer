@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import spritePacker from '.';
+import spritePacker, { format } from '.';
 import yargs from 'yargs';
 
 const argv = yargs
@@ -28,7 +28,7 @@ const argv = yargs
   })
   .option('format', {
     type: 'string',
-    choices: ['JsonArray', 'JsonHash', 'css'] as const,
+    choices: Object.keys(format),
     default: 'JsonArray' as const,
     desc: 'Set output file type'
   })

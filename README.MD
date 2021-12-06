@@ -13,7 +13,8 @@ Options:
   -w, --maxWidth         Set output image max width     [number] [default: 2048]
   -h, --maxHeight        Set output image max height    [number] [default: 2048]
       --format           Set output file type
-       [string] [choices: "JsonArray", "JsonHash", "css"] [default: "JsonArray"]
+           [string] [choices: "JsonArray", "JsonHash", "css", "plist"] [default:
+                                                                    "JsonArray"]
   -o, --outDir           Set output file dir            [string] [default: "./"]
   -n, --name             Set output file name  [string] [default: "spritesheet"]
       --frameName, --fn  Set frame name   [string] [default: "[dir][name][ext]"]
@@ -30,14 +31,14 @@ Examples:
 # Example
 
 ```bash
-$ spritepacker -f "./test/image/**/*.png" -n icons -o ./test
+$ spritepacker -f "./.test/image/**/*.png" -n icons -o ./.test
 ```
 
 ### File directory
 
 ```
-$ tree ./test/image/
-./test/image/
+$ tree ./.test/image/
+./.test/image/
 ├── ban.png
 ├── endLine.png
 ├── fruits
@@ -69,6 +70,11 @@ $ tree ./test/image/
 
 ### Default output JsonArray
 
+> Support phaser...
+
+<details>
+<summary>See output JsonArray data</summary>
+
 ```json
 {
   "frames": [
@@ -98,11 +104,18 @@ $ tree ./test/image/
 }
 ```
 
+</details>
+
 ### Output JsonHash
 
+> Support phaser...
+
 ```bash
-$ spritepacker -f "./test/image/**/*.png" -n icons -o ./test --format JsonHash --frameName [dir][name]
+$ spritepacker -f "./.test/image/**/*.png" -n icons -o ./.test --format JsonHash --frameName [dir][name]
 ```
+
+<details>
+<summary>See output JsonHash data</summary>
 
 ```json
 {
@@ -133,13 +146,18 @@ $ spritepacker -f "./test/image/**/*.png" -n icons -o ./test --format JsonHash -
 }
 ```
 
+</details>
+
 ### Output css
 
 ```bash
-$ spritepacker -f "./test/image/**/*.png" -n icons -o ./test --format css --frameName [dir][name] -s __
+$ spritepacker -f "./.test/image/**/*.png" -n icons -o ./.test --format css --frameName [dir][name] -s __
 ```
 
 > will replace "/" with "\_\_"
+
+<details>
+<summary>See output css data</summary>
 
 ```css
 .icons {
@@ -258,6 +276,242 @@ $ spritepacker -f "./test/image/**/*.png" -n icons -o ./test --format css --fram
   background-position: -1000px -601px;
 }
 ```
+
+</details>
+
+### Output plist
+
+> Support cocos creator
+
+```bash
+$ spritepacker -f "./.test/image/**/*.png" -n icons -o ./.test --format plist --frameName [dir][name]
+```
+
+<details>
+<summary>See output plist data</summary>
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>frames</key>
+    <dict>
+      <key>ground.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{720,127}</string>
+        <key>textureRect</key>
+        <string>{0,0},{720,127}</string>
+      </dict>
+      <key>endLine.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{711,8}</string>
+        <key>textureRect</key>
+        <string>{0,127},{711,8}</string>
+      </dict>
+      <key>tryagain.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{533,90}</string>
+        <key>textureRect</key>
+        <string>{0,135},{533,90}</string>
+      </dict>
+      <key>fruits/11.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{408,408}</string>
+        <key>textureRect</key>
+        <string>{0,225},{408,408}</string>
+      </dict>
+      <key>gameover.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{358,247}</string>
+        <key>textureRect</key>
+        <string>{0,633},{358,247}</string>
+      </dict>
+      <key>p1.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{319,292}</string>
+        <key>textureRect</key>
+        <string>{720,0},{319,292}</string>
+      </dict>
+      <key>p5.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{319,292}</string>
+        <key>textureRect</key>
+        <string>{408,292},{319,292}</string>
+      </dict>
+      <key>fruits/10.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{308,309}</string>
+        <key>textureRect</key>
+        <string>{727,292},{308,309}</string>
+      </dict>
+      <key>fruits/9.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{308,308}</string>
+        <key>textureRect</key>
+        <string>{0,880},{308,308}</string>
+      </dict>
+      <key>fruits/8.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{258,258}</string>
+        <key>textureRect</key>
+        <string>{308,880},{258,258}</string>
+      </dict>
+      <key>light.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{256,256}</string>
+        <key>textureRect</key>
+        <string>{408,601},{256,256}</string>
+      </dict>
+      <key>fruits/7.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{193,193}</string>
+        <key>textureRect</key>
+        <string>{566,857},{193,193}</string>
+      </dict>
+      <key>fruits/6.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{183,183}</string>
+        <key>textureRect</key>
+        <string>{664,601},{183,183}</string>
+      </dict>
+      <key>yes.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{182,89}</string>
+        <key>textureRect</key>
+        <string>{533,135},{182,89}</string>
+      </dict>
+      <key>fruits/5.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{153,152}</string>
+        <key>textureRect</key>
+        <string>{847,601},{153,152}</string>
+      </dict>
+      <key>no.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{127,89}</string>
+        <key>textureRect</key>
+        <string>{566,1050},{127,89}</string>
+      </dict>
+      <key>fruits/4.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{119,119}</string>
+        <key>textureRect</key>
+        <string>{693,1050},{119,119}</string>
+      </dict>
+      <key>fruits/3.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{108,108}</string>
+        <key>textureRect</key>
+        <string>{847,753},{108,108}</string>
+      </dict>
+      <key>fruits/2.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{80,80}</string>
+        <key>textureRect</key>
+        <string>{955,753},{80,80}</string>
+      </dict>
+      <key>fruits/1.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{52,52}</string>
+        <key>textureRect</key>
+        <string>{408,225},{52,52}</string>
+      </dict>
+      <key>ban.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{24,41}</string>
+        <key>textureRect</key>
+        <string>{308,1139},{24,41}</string>
+      </dict>
+      <key>pao.png</key>
+      <dict>
+        <key>spriteOffset</key>
+        <string>{0,0}</string>
+        <key>spriteSourceSize</key>
+        <string>{38,40}</string>
+        <key>textureRect</key>
+        <string>{1000,601},{38,40}</string>
+      </dict>
+    </dict>
+    <key>metadata</key>
+    <dict>
+      <key>format</key>
+      <integer>3</integer>
+      <key>pixelFormat</key>
+      <string>RGBA8888</string>
+      <key>size</key>
+      <string>{1039,1188}</string>
+      <key>textureFileName</key>
+      <string>icons.png</string>
+    </dict>
+  </dict>
+</plist>
+```
+
+</details>
 
 # Usage from node
 
