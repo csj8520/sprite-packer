@@ -53,13 +53,13 @@ const argv = yargs
   .option('border', {
     alias: 'b',
     type: 'number',
-    default: 0,
+    default: 1,
     desc: 'Set image border'
   })
   .option('padding', {
     alias: 'p',
     type: 'number',
-    default: 0,
+    default: 1,
     desc: 'Set frames spacing'
   })
   .option('sep', {
@@ -67,6 +67,11 @@ const argv = yargs
     type: 'string',
     default: '/',
     desc: 'Set file separator'
+  })
+  .option('trim', {
+    type: 'boolean',
+    default: false,
+    desc: 'Remove transparent pixels'
   })
   .version()
   .alias('version', 'v')
@@ -85,6 +90,7 @@ const argv = yargs
     border: argv.border,
     padding: argv.padding,
     sep: argv.sep,
+    trim: argv.trim,
     saveFile: true
   });
 })();

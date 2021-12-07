@@ -1,6 +1,6 @@
 {
   "name": "@sjchang/sprite-packer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "sprite-packer",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,10 @@
   "scripts": {
     "dev": "esno ./src/index.ts",
     "dev:cli": "esno ./src/cli.ts",
-    "dev:cli:plist": "esno ./src/cli.ts -f \"./.test/image/**/*.png\" -n icons -o ./.test --format plist",
+    "dev:cli:JsonArray": "esno ./src/cli.ts -f \"./.test/image/**/*.png\" -n icons -o ./.test --format JsonArray",
+    "dev:cli:JsonHash": "esno ./src/cli.ts -f \"./.test/image/**/*.png\" -n icons -o ./.test --format JsonHash --frameName [dir][name]",
+    "dev:cli:css": "esno ./src/cli.ts -f \"./.test/image/**/*.png\" -n icons -o ./.test --format css --frameName [dir][name] -s __",
+    "dev:cli:plist": "esno ./src/cli.ts -f \"./.test/image/**/*.png\" -n icons -o ./.test --format plist --trim",
     "debug": "ts-node-dev --inspect -- ./src/index.ts",
     "clean": "rimraf dist",
     "build": "pnpm run clean && tsc",

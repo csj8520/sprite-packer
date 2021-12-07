@@ -1,4 +1,4 @@
-import { FormatObj } from '.';
+import { FormatObj } from '..';
 
 export const formatPlist: FormatObj<string> = {
   format(bin, option) {
@@ -7,11 +7,13 @@ export const formatPlist: FormatObj<string> = {
       <key>${it.data.name}</key>
       <dict>
         <key>spriteOffset</key>
-        <string>{0,0}</string>
-        <key>spriteSourceSize</key>
+        <string>{${(it.data.trim.left - it.data.trim.right) / 2},${(it.data.trim.bottom - it.data.trim.top) / 2}}</string>
+        <key>spriteSize</key>
         <string>{${it.width},${it.height}}</string>
+        <key>spriteSourceSize</key>
+        <string>{${it.data.sourceSize.width},${it.data.sourceSize.height}}</string>
         <key>textureRect</key>
-        <string>{${it.x},${it.y}},{${it.width},${it.height}}</string>
+        <string>{{${it.x},${it.y}},{${it.width},${it.height}}}</string>
       </dict>`;
     });
 

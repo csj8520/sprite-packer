@@ -3,27 +3,15 @@ import path from 'path';
 import _glob from 'glob';
 import Jimp from 'jimp';
 import { promisify } from 'es6-promisify';
-import { MaxRectsPacker } from 'maxrects-packer';
+import { MaxRectsPacker, IRectangle } from 'maxrects-packer';
 import globParent from 'glob-parent';
 import { format } from './format';
+import { scanOpacity } from './utiles';
+import { FormatType, MPRectangle, SpritePackerOption } from './type';
+export * from './type';
 const glob = promisify(_glob);
 
-export type FormatType = keyof typeof format;
 export { format };
-
-export interface SpritePackerOption<T extends FormatType = FormatType> {
-  file: string;
-  maxWidth?: number;
-  maxHeight?: number;
-  format?: T;
-  outDir?: string;
-  name?: string;
-  frameName?: string;
-  border?: number;
-  padding?: number;
-  sep?: string;
-  saveFile?: boolean;
-}
 
 const defaultOption: Partial<SpritePackerOption> = {
   maxWidth: 2048,
@@ -32,9 +20,10 @@ const defaultOption: Partial<SpritePackerOption> = {
   outDir: process.cwd(),
   name: 'spritesheet',
   frameName: '[dir][name][ext]',
-  border: 0,
-  padding: 0,
+  border: 1,
+  padding: 1,
   sep: '/',
+  trim: false,
   saveFile: false
 };
 
@@ -44,7 +33,7 @@ export default async function spritePacker<T extends FormatType = 'JsonArray'>(
   option: SpritePackerOption<T>
 ): Promise<{ image: Buffer; data: ReturnType<typeof format[T]['format']> }>;
 
-export default async function spritePacker<T extends FormatType = FormatType>(option: SpritePackerOption<T>) {
+export default async function spritePacker<T extends FormatType = 'JsonArray'>(option: SpritePackerOption<T>) {
   option = Object.assign({}, defaultOption, option);
   const files = (await glob(option.file)) as string[];
   if (files.length === 0) throw new Error('Cannot find any files');
@@ -53,7 +42,7 @@ export default async function spritePacker<T extends FormatType = FormatType>(op
   });
 
   const rootDir = globParent(option.file);
-  const imgs = await Promise.all(
+  const imgs: MPRectangle.MPRectangleData[] = await Promise.all(
     files.map(async it => {
       const shortPath = it.replace(rootDir + '/', '');
       const paser = path.parse(shortPath);
@@ -64,10 +53,41 @@ export default async function spritePacker<T extends FormatType = FormatType>(op
         .split('/')
         .join(option.sep!);
 
-      return { jimp: await Jimp.read(it), name };
+      const jimp = await Jimp.read(it);
+      const { width, height } = jimp.bitmap;
+
+      if (option.trim) {
+        let top = scanOpacity(jimp, [0, height - 1], [0, width - 1], 'horizontal');
+        let bottom = scanOpacity(jimp, [height - 1, top], [0, width - 1], 'horizontal');
+        let left = scanOpacity(jimp, [0, width - 1], [top, height - 1 - bottom], 'vertical');
+        let right = scanOpacity(jimp, [width - 1, 0], [top, height - 1 - bottom], 'vertical');
+        top % 2 === 1 && top--;
+        bottom % 2 === 1 && bottom--;
+        left % 2 === 1 && left--;
+        right % 2 === 1 && right--;
+        let _width = width - left - right;
+        let _height = height - top - bottom;
+
+        jimp.crop(left, top, _width, _height);
+        return {
+          jimp,
+          name,
+          sourceSize: { width, height },
+          size: { width: _width, height: _height },
+          trim: { left, right, top, bottom }
+        };
+      }
+
+      return {
+        jimp,
+        name,
+        sourceSize: { width, height },
+        size: { width, height },
+        trim: { left: 0, right: 0, top: 0, bottom: 0 }
+      };
     })
   );
-  const packer = new MaxRectsPacker(option.maxWidth!, option.maxHeight!, option.padding!, {
+  const packer = new MaxRectsPacker<MPRectangle>(option.maxWidth!, option.maxHeight!, option.padding!, {
     smart: true,
     pot: false,
     square: false,
@@ -79,10 +99,8 @@ export default async function spritePacker<T extends FormatType = FormatType>(op
 
   const bin = packer.bins[0];
   const img = new Jimp(bin.width, bin.height);
-  bin.rects.forEach(it => {
-    if (it.rot) it.data.jimp as Jimp;
-    img.composite(it.data.jimp, it.x, it.y);
-  });
+  bin.rects.forEach(it => img.composite(it.data.jimp, it.x, it.y));
+
   const useFormat = format[option.format!];
   if (!useFormat) throw new Error(`format: ${option.format} is not support`);
 
